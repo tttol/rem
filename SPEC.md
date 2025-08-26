@@ -18,7 +18,7 @@
 # Class diagram
 ```mermaid
 ---
-title: Animal example
+title: REM's Class Diagram(Draft)
 ---
 classDiagram
     class Todo {
@@ -32,19 +32,14 @@ classDiagram
         +delete()
     }
 
-    class TodoImpl {
-        +create()
-        +read()
-        +update()
-        +delete()
+    class File {
+        +save()
+        +load()
     }
 
-    class File {
-        +File file
-        +open()
-        +close()
-        +read()
-        +write()
+    class FileImpl {
+        +save()
+        +load()
     }
 
     class Sync {
@@ -52,7 +47,7 @@ classDiagram
         +import()
     }
 
-    Todo <|-- TodoImpl
-    TodoImpl --> File
+    File <|-- FileImpl
+    Todo --> File
     Sync --> File
 ```
