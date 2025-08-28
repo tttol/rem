@@ -1,10 +1,13 @@
+import { Status } from "./enum";
+
 export class Task {
-  id: number;
+  id: string;
   title: string;
-  status: 'TODO' | 'DOING' | 'DONE' | 'PENDING';
+  // status: 'TODO' | 'DOING' | 'DONE' | 'PENDING';
+  status: Status;
   description: string;
 
-  constructor(id: number, title: string, status: 'TODO' | 'DOING' | 'DONE' | 'PENDING' = 'TODO', description: string = '') {
+  constructor(id: string, title: string, status: Status, description: string = '') {
     this.id = id;
     this.title = title;
     this.status = status;
