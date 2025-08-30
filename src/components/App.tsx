@@ -1,5 +1,5 @@
 import { invoke } from "@tauri-apps/api/core";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 // import "../App.css";
 import "../styles.css";
 import Lane from "./Lane";
@@ -24,6 +24,11 @@ function App() {
       )
     );
   };
+
+  useEffect(() => {
+    console.log("App started");
+    invoke('get_all_task').then((message) => console.log(message));
+  }, []);
 
   return (
     <>

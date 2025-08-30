@@ -1,2 +1,4 @@
-// #[tauri::command]
-// fn 
+#[tauri::command]
+fn get_all_task() -> Task[] {
+    
+}
