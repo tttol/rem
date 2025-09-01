@@ -16,6 +16,7 @@ function App() {
     new Task("5", "Sample Task 5", Status.DONE, "This is a sample done task"),
     new Task("6", "Sample Task 6", Status.DONE, "This is a sample done task"),
   ]);
+  const [message, setMessage] = useState<string>();
 
   const updateTaskStatus = (taskId: string, newStatus: Status) => {
     setTasks(prevTasks =>
@@ -27,12 +28,13 @@ function App() {
 
   useEffect(() => {
     console.log("App started");
-    invoke('get_all_task').then((message) => console.log(message));
+    invoke<string>('get_all_task').then((message) => setMessage(message));
   }, []);
 
   return (
     <>
       <Header />
+      <p>{message}</p>
       <main className="flex justify-center w-full px-2">
         <div className="flex">
           <Lane tasks={tasks} statusLabel={Status.TODO} updateTaskStatus={updateTaskStatus} />
