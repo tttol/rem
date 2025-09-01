@@ -15,22 +15,32 @@ pub fn get_all(app_handle: &AppHandle) -> Result<String, Box<dyn std::error::Err
     std::fs::create_dir_all(&app_data_dir.join("done"))?;
     std::fs::create_dir_all(&app_data_dir.join("pending"))?;
     
-    Ok("Directories created successfully".to_string())
 }
 
-fn get_tasks(target_path: &PathBuf) -> Result<> {
+fn get_tasks(target_path: &PathBuf) -> Result<(), Box<dyn std::error::Error>>{
+    let mut tasks = vec![];
     for entry in fs::read_dir(target_path)? {
         let entry = entry?;
         let path = entry.path();
         if path.is_dir() {
             continue;
         }
-        let file_name_result = entry.file_name().into_string();
-        match file_name_result {
-            Ok(file_name) => read_file(&file_name, target_path),
-            Err(e) => format!("Error converting filename: {}", e)
+        // let file_name_result = entry.file_name().into_string()?;
+        // match file_name_result {
+        //     Ok(file_name) => read_file(&file_name, target_path),
+        //     Err(e) => format!("Error converting filename: {}", e)
+        // }
+
+        // let file_name = entry.file_name().into_string()?;
+        
+        let file_name = entry.file_name().into_string()
+                        .map_err(|e| format!("Failed to converting into string. {}", e))?;
+        match file::read_single_file(&file_name, &path) {
+            Ok(content) => tasks.push(content),
+            Err(e) => format!("Error reading file: {}", e),
         }
     }
+    return tasks;
 }
 
 fn read_file(filename: &str, path: &PathBuf) -> String {
