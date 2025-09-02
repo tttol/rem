@@ -2,8 +2,8 @@ mod file;
 mod task;
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
 #[tauri::command]
-fn get_all_task(app_handle: tauri::AppHandle) -> std::string::String {
-    return task::get_all(&app_handle)
+fn get_all_task(app_handle: tauri::AppHandle) -> Result<Vec<String>, tauri::Error>{
+    task::get_all(&app_handle).map_err(|e| tauri::Error::from(e))
 }
 #[tauri::command]
 fn greet(name: &str) -> String {
