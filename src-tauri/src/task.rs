@@ -20,28 +20,18 @@ pub fn get_all(app_handle: &AppHandle) -> Result<Vec<Task>, tauri::Error> {
     info!("app_data_dir={}", app_data_dir.display());
 
     let status_list = &["todo", "doing", "done", "pending"];
-    // create a directory if it does not exist.
-    
-    let todo_path = app_data_dir.join("todo");
-    let doing_path = app_data_dir.join("doing");
-    let done_path = app_data_dir.join("done");
-    let pending_path = app_data_dir.join("pending");
-    std::fs::create_dir_all(&todo_path);
-    std::fs::create_dir_all(&doing_path);
-    std::fs::create_dir_all(&done_path);
-    std::fs::create_dir_all(&pending_path);
-
-    let todos = get_tasks(&todo_path)?;
-    let doings = get_tasks(&doing_path)?;
-    let dones = get_tasks(&done_path)?;
-    let pendings = get_tasks(&pending_path)?;
-    info!("todo={:?}, doing={:?}, done={:?}, pending={:?}", todos, doings, dones, pendings);
-
     let mut all_tasks: Vec<Task> = Vec::new();
-    all_tasks.extend(todos);
-    all_tasks.extend(doings);
-    all_tasks.extend(dones);
-    all_tasks.extend(pendings);
+    
+    for s in &["todo", "doing", "done", "pending"] {
+        let path = app_data_dir.join(s);
+
+        // create a directory if it does not exist.
+        std::fs::create_dir_all(&path);
+
+        let tasks = get_tasks(&path)?;
+        info!("{}={:?}", &s, tasks);
+        all_tasks.extend(tasks);
+    }
 
     Ok(all_tasks)
 }
