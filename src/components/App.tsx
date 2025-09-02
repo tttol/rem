@@ -28,7 +28,13 @@ function App() {
 
   useEffect(() => {
     console.log("App started");
-    invoke<string>('get_all_task').then((message) => setMessage(message));
+    invoke<Task[]>('get_all_task').then((fetchedTasks) => {
+      setTasks(fetchedTasks);
+      setMessage(`Loaded ${fetchedTasks.length} tasks`);
+    }).catch(err => {
+      console.error("Failed to fetch tasks:", err);
+      setMessage("Failed to load tasks");
+    });
   }, []);
 
   return (

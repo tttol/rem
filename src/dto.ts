@@ -3,7 +3,6 @@ import { Status } from "./enum";
 export class Task {
   id: string;
   title: string;
-  // status: 'TODO' | 'DOING' | 'DONE' | 'PENDING';
   status: Status;
   description: string;
 
