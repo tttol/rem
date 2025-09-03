@@ -12,12 +12,13 @@ function App() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [server_message, setMessage] = useState<string>();
 
-  const updateTaskStatus = (taskId: string, newStatus: Status) => {
+  const updateTaskStatus = (taskId: string, oldStatus: Status, newStatus: Status) => {
     setTasks(prevTasks =>
       prevTasks.map(task =>
         task.id === taskId ? { ...task, status: newStatus } : task
       )
     );
+    invoke('update_task_status', {task_id: taskId, old_status: oldStatus, new_status: newStatus}).then(() => console.log('update success'));
   };
 
   const readTasks = () => {

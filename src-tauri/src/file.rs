@@ -14,8 +14,12 @@ pub fn read_single_file(path: &PathBuf) -> std::io::Result<String> {
     Ok(data)
 }
 
-fn create(data: &str, filename: &str, path: &str) -> std::io::Result<()> {
-    let mut f = File::create_new(format!("{}/{}", path, filename))?;
+pub fn delete(path: &PathBuf) {
+    
+}
+
+pub fn create(data: &str, path: &PathBuf) -> std::io::Result<()> {
+    let mut f = File::create_new(path)?;
     f.write_all(data.as_bytes())?;
     Ok(())
 }
