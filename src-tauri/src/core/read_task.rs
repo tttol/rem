@@ -1,16 +1,10 @@
 use std::{fs, path::PathBuf};
 use tauri::{AppHandle, Manager};
-use log::{info, warn};
-use crate::{file, service::task::Task};
-
-
+use log::{info};
+use crate::{core::task::Task, file, fileio::app_data_dir};
 
 pub fn read_all(app_handle: &AppHandle) -> Result<Vec<Task>, tauri::Error> {
-    let app_data_dir = app_handle.path().app_data_dir().map_err(|e| {
-        std::io::Error::new(std::io::ErrorKind::Other, e)
-    })?;
-    info!("app_data_dir={}", app_data_dir.display());
-
+    let app_data_dir = app_data_dir::get(app_handle)?;
     let mut all_tasks: Vec<Task> = Vec::new();
     
     for status in &["todo", "doing", "done", "pending"] {
@@ -25,6 +19,15 @@ pub fn read_all(app_handle: &AppHandle) -> Result<Vec<Task>, tauri::Error> {
     }
 
     Ok(all_tasks)
+}
+
+pub fn read_single(app_handle: &AppHandle, task_id: &str, status: &str) -> Result<Task, tauri::Error> {
+    let app_data_dir = app_data_dir::get(app_handle)?;
+    let file_path = app_data_dir.join(status);
+    match file::read_single_file(&file_path) {
+        Ok(content) => string_to_task(&content, &filename, &target_path),
+        Err(e) => eprintln!("Error reading file: {}", e),
+    }
 }
 
 fn read_tasks_by_status(target_path: &PathBuf) -> Result<Vec<Task>, tauri::Error>{

@@ -1,9 +1,9 @@
 mod file;
-mod service;
+mod core;
 mod fileio;
-use service::read_task;
-use service::update_task;
-use service::task;
+use core::read_task;
+use core::update_task;
+use core::task;
 
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
 #[tauri::command]
