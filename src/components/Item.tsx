@@ -5,7 +5,7 @@ import { LuUndo2 } from "react-icons/lu";
 import { MdDone } from "react-icons/md";
 
 function Item({ task, updateTaskStatus }: { task: Task; updateTaskStatus: (taskId: string, newStatus: Status) => void }) {
-  const availableStatuses = Object.values(Status).filter(status => status !== task.status);
+  // const availableStatuses = Object.values(Status).filter(status => status !== task.status);
 
   return (
     <div style={{ border: '1px solid #ccc', padding: '8px', margin: '4px' }}>

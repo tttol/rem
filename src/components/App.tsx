@@ -8,14 +8,7 @@ import { Status } from "../enum";
 import Header from "./Header";
 
 function App() {
-  const [tasks, setTasks] = useState<Task[]>([
-    new Task("1", "Sample Task 1", Status.TODO, "This is a sample todo task"),
-    new Task("2", "Sample Task 2", Status.DOING, "This is a sample doing task"),
-    new Task("3", "Sample Task 3", Status.DONE, "This is a sample done task"),
-    new Task("4", "Sample Task 4", Status.DONE, "This is a sample done task"),
-    new Task("5", "Sample Task 5", Status.DONE, "This is a sample done task"),
-    new Task("6", "Sample Task 6", Status.DONE, "This is a sample done task"),
-  ]);
+  const [tasks, setTasks] = useState<Task[]>([]);
   const [message, setMessage] = useState<string>();
 
   const updateTaskStatus = (taskId: string, newStatus: Status) => {
