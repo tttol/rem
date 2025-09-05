@@ -1,4 +1,3 @@
-mod file;
 mod core;
 mod fileio;
 use core::read_task;
