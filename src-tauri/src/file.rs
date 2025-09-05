@@ -14,11 +14,14 @@ pub fn read_single_file(path: &PathBuf) -> std::io::Result<String> {
     Ok(data)
 }
 
-pub fn delete(path: &PathBuf) {
-    
+pub fn delete(path: &PathBuf) -> std::io::Result<()> {
+    info!("Deleting a file: {:?}", path);
+    std::fs::remove_file(path)?;
+    Ok(())
 }
 
 pub fn create(data: &str, path: &PathBuf) -> std::io::Result<()> {
+    info!("Creating a new file. {:?}", &path);
     let mut f = File::create_new(path)?;
     f.write_all(data.as_bytes())?;
     Ok(())

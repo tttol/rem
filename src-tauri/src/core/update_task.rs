@@ -1,5 +1,8 @@
+use std::path;
+
 use crate::{core::{read_task, task::Task}, file, fileio};
 use fileio::app_data_dir;
+use log::info;
 use tauri::AppHandle;
 
 pub fn update() {
@@ -11,14 +14,28 @@ pub fn update_status(app_handle: &AppHandle, task_id: &str, old_status: &str, ne
     let app_data_dir = app_data_dir::get(app_handle)?;
     let original_data = read_task::read_single(app_handle, task_id, old_status)?;
     let modified_data = Task {
-        id: task_id,
+        id: task_id.to_string(),
         title: original_data.title,
-        status: new_status,
+        status: new_status.to_string(),
         description: original_data.description
     };
-    file::create(&app_data_dir.join(new_status));
-    file::delete(app_data_dir.join(old_status));
-    Ok(())
+    let task_string = task_to_string(&modified_data)
+        .map_err(|e| tauri::Error::Io(std::io::Error::new(std::io::ErrorKind::InvalidData, e)))?;
+    
+    info!("updated data={:?}", modified_data);
+    match file::create(&task_string, &app_data_dir.join(&new_status).join(format!("{}.json", task_id))) {
+        Ok(_) => {
+            info!("{:?} has been created.", &app_data_dir.join(&new_status));
+            match file::delete(&app_data_dir.join(old_status).join(format!("{}.json", task_id))) {
+                Ok(_) => {
+                    info!("{:?} has been deleted.", &app_data_dir.join(old_status));
+                    Ok(())
+                },
+                Err(e) => Err(tauri::Error::Io(e))
+            }
+        },
+        Err(e) => Err(tauri::Error::Io(e))
+    }
 }
 
 fn task_to_string(task: &Task) -> Result<String, serde_json::Error> {

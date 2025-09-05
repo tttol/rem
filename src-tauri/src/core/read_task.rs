@@ -17,6 +17,7 @@ pub fn read_all(app_handle: &AppHandle) -> Result<Vec<Task>, tauri::Error> {
         info!("{}={:?}", &status, tasks);
         all_tasks.extend(tasks);
     }
+    info!("all_tasks={:?}", all_tasks);
 
     Ok(all_tasks)
 }
@@ -32,6 +33,10 @@ pub fn read_single(app_handle: &AppHandle, task_id: &str, status: &str) -> Resul
 
 fn read_tasks_by_status(target_path: &PathBuf) -> Result<Vec<Task>, tauri::Error>{
     let mut tasks = vec![];
+    let status = target_path.file_name()
+        .and_then(|name| name.to_str())
+        .unwrap_or("todo");
+    
     for entry in fs::read_dir(target_path)? {
         let entry = entry?;
         let file_path = entry.path();
@@ -52,18 +57,21 @@ fn read_tasks_by_status(target_path: &PathBuf) -> Result<Vec<Task>, tauri::Error
         match file::read_single_file(&file_path) {
             Ok(content) => {
                 match string_to_task(&content) {
-                    Ok(task) => tasks.push(task),
+                    Ok(mut task) => {
+                        task.status = status.to_string();
+                        tasks.push(task);
+                    },
                     Err(e) => eprintln!("Error parsing task: {}", e),
                 }
             },
             Err(e) => eprintln!("Error reading file: {}", e),
         }
     }
-    return Ok(tasks);
+    Ok(tasks)
 }
 
 fn string_to_task(content: &str) -> Result<Task, tauri::Error> {
     let task = serde_json::from_str(content)?;
-    return Ok(task);
+    Ok(task)
 }
 

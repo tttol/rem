@@ -5,15 +5,19 @@ use core::read_task;
 use core::update_task;
 use core::task;
 
+use log::info;
+
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
 #[tauri::command]
 fn get_all_task(app_handle: tauri::AppHandle) -> Result<Vec<task::Task>, tauri::Error>{
+    info!("Calling get_all_task");
     read_task::read_all(&app_handle).map_err(|e| tauri::Error::from(e))
 }
 
 #[tauri::command]
-fn update_task_status(app_handle: tauri::AppHandle, task_id: &str, new_status: &str) -> Result<(), tauri::Error>{
-    update_task::update_status(app_handle, task_id, new_status);
+fn update_task_status(app_handle: tauri::AppHandle, task_id: &str, old_status: &str, new_status: &str) -> Result<(), tauri::Error>{
+    info!("Calling update_task_status");
+    update_task::update_status(&app_handle, task_id, old_status, new_status)
 }
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]

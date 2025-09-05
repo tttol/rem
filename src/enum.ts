@@ -1,6 +1,6 @@
 export enum Status {
-  TODO = 'TODO',
-  DOING = 'DOING',
-  DONE = 'DONE',
-  PENDING = 'PENDING'
+  TODO = 'todo',
+  DOING = 'doing',
+  DONE = 'done',
+  PENDING = 'pending'
 }

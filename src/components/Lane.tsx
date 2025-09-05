@@ -2,7 +2,7 @@ import { Task } from '../dto';
 import { Status } from '../enum';
 import Item from './Item';
 
-function Lane({ tasks, statusLabel, updateTaskStatus }: { tasks: Task[]; statusLabel: Status; updateTaskStatus: (taskId: string, newStatus: Status) => void }) {
+function Lane({ tasks, statusLabel, updateTaskStatus }: { tasks: Task[]; statusLabel: Status; updateTaskStatus: (taskId: string, oldStatus: Status, newStatus: Status) => void }) {
   const filteredTasks = tasks.filter(task => task.status === statusLabel);
 
   return (

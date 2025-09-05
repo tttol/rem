@@ -4,25 +4,23 @@ import { Status } from "../enum";
 import { LuUndo2 } from "react-icons/lu";
 import { MdDone } from "react-icons/md";
 
-function Item({ task, updateTaskStatus }: { task: Task; updateTaskStatus: (taskId: string, newStatus: Status) => void }) {
-  // const availableStatuses = Object.values(Status).filter(status => status !== task.status);
-
+function Item({ task, updateTaskStatus }: { task: Task; updateTaskStatus: (taskId: string, oldStatus: Status, newStatus: Status) => void }) {
   return (
     <div style={{ border: '1px solid #ccc', padding: '8px', margin: '4px' }}>
       <h3>{task.title}</h3>
       <p>{task.description}</p>
       <p>Current Status: {task.status}</p>
       <div>
-        <div onClick={() => updateTaskStatus(task.id, Status.DOING)}>
+        <div onClick={() => updateTaskStatus(task.id, task.status as Status, Status.DOING)}>
           <FaPlay />
         </div>
-        <div onClick={() => updateTaskStatus(task.id, Status.PENDING)}>
+        <div onClick={() => updateTaskStatus(task.id, task.status as Status, Status.PENDING)}>
           <FaPause />
         </div>
-        <div onClick={() => updateTaskStatus(task.id, Status.TODO)}>
+        <div onClick={() => updateTaskStatus(task.id, task.status as Status, Status.TODO)}>
           <LuUndo2 />
         </div>
-        <div onClick={() => updateTaskStatus(task.id, Status.DONE)}>
+        <div onClick={() => updateTaskStatus(task.id, task.status as Status, Status.DONE)}>
           <MdDone />
         </div>
       </div>

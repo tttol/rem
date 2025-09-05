@@ -18,14 +18,21 @@ function App() {
         task.id === taskId ? { ...task, status: newStatus } : task
       )
     );
-    invoke('update_task_status', {task_id: taskId, old_status: oldStatus, new_status: newStatus}).then(() => console.log('update success'));
+    invoke('update_task_status', {taskId: taskId, oldStatus: oldStatus, newStatus: newStatus})
+      .then(() => {
+        console.log('update success');
+      })
+      .catch(err => {
+        console.error('update failed:', err);
+        setMessage(`Failed to update task. ${err}`);
+      });
   };
 
   const readTasks = () => {
     invoke<Task[]>('get_all_task').then((fetchedTasks) => {
       setTasks(fetchedTasks);
     }).catch(err => {
-      setMessage(`Failed to fetch tasks. {$err}`);
+      setMessage(`Failed to fetch tasks. ${err}`);
     });
   }
 
@@ -35,6 +42,7 @@ function App() {
 
   const reload = () => {
     setTasks([]);
+    setMessage("");
     readTasks();
   }
 
