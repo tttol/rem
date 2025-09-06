@@ -71,7 +71,7 @@ function App() {
         <div className={`transition-all duration-500 ease-in-out overflow-hidden ${
           isShowForm ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
         }`}>
-          <CreateForm />
+          <CreateForm setIsShowForm={setIsShowForm} reload={reload} />
         </div>
         <div className="flex justify-center mx-auto w-full max-w-6xl">
           <Lane tasks={tasks} statusLabel={Status.TODO} updateTaskStatus={updateTaskStatus} />

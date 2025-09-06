@@ -1,11 +1,12 @@
 import { SubmitHandler, useForm } from "react-hook-form";
+import { invoke } from "@tauri-apps/api/core";
 
 type Inputs = {
   title: string,
   description: string
 }
 
-function CreateForm() {
+function CreateForm({setIsShowForm, reload}: {setIsShowForm: (isShowForm: boolean) => void, reload: () => void}) {
 
   const {
     register,
@@ -13,11 +14,22 @@ function CreateForm() {
     watch,
     formState: {errors}
   } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    setIsShowForm(false);
+
+    invoke('create_task', {title: data.title, description: data.description})
+      .then(() => {
+        console.log('create success');
+        reload();
+      })
+      .catch(err => {
+        console.error('create failed:', err);
+      });
+  }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="max-w-md mx-auto p-4">
-      <p>Add a new task</p>
+      <p className="text-2xl">Add a new task</p>
       <div className="mb-4">
         <input 
           type="text" 
