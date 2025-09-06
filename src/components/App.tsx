@@ -1,12 +1,12 @@
 import { invoke } from "@tauri-apps/api/core";
 import { useState, useEffect } from "react";
-// import "../App.css";
 import "../styles.css";
 import Lane from "./Lane";
 import { Task } from "../dto";
 import { Status } from "../enum";
 import Header from "./Header";
 import { IoReload } from "react-icons/io5";
+import { IoIosAddCircleOutline } from "react-icons/io";
 
 function App() {
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -53,6 +53,7 @@ function App() {
       <main className="w-full px-8 text-center">
         <div onClick={reload}>
           <IoReload />
+          <IoIosAddCircleOutline />
         </div>
         <div className="flex justify-center mx-auto w-full max-w-6xl">
           <Lane tasks={tasks} statusLabel={Status.TODO} updateTaskStatus={updateTaskStatus} />

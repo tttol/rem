@@ -12,14 +12,6 @@ function Lane({ tasks, statusLabel, updateTaskStatus }: { tasks: Task[]; statusL
       {filteredTasks.map(task => (
         <Item key={task.id} task={task} updateTaskStatus={updateTaskStatus} />
       ))}
-      {statusLabel == Status.TODO && 
-        <div className="border border-gray-300 p-2 m-1">
-          <div className='flex items-center'>
-            <IoIosAddCircleOutline />
-            <div>Add new task</div>
-          </div>
-        </div>
-      }
     </div>
   );
 }
