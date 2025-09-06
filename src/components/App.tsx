@@ -7,6 +7,7 @@ import { Status } from "../enum";
 import Header from "./Header";
 import { IoReload } from "react-icons/io5";
 import { IoIosAddCircleOutline } from "react-icons/io";
+import { IconContext } from "react-icons";
 
 function App() {
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -51,10 +52,16 @@ function App() {
       <Header />
       <p>{server_message}</p>
       <main className="w-full px-8 text-center">
-        <div onClick={reload}>
-          <IoReload />
-          <IoIosAddCircleOutline />
-        </div>
+        <IconContext.Provider value={{size: "2.5em"}}>
+          <div className="flex justify-end">
+            <div onClick={reload}>
+              <IoReload className="w-full"/>
+            </div>
+            <div>
+              <IoIosAddCircleOutline />
+            </div>
+          </div>
+        </IconContext.Provider>
         <div className="flex justify-center mx-auto w-full max-w-6xl">
           <Lane tasks={tasks} statusLabel={Status.TODO} updateTaskStatus={updateTaskStatus} />
           <Lane tasks={tasks} statusLabel={Status.DOING} updateTaskStatus={updateTaskStatus} />
