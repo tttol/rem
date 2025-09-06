@@ -8,10 +8,12 @@ import Header from "./Header";
 import { IoReload } from "react-icons/io5";
 import { IoIosAddCircleOutline } from "react-icons/io";
 import { IconContext } from "react-icons";
+import CreateForm from "./CreateForm";
 
 function App() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [server_message, setMessage] = useState<string>();
+  const [isShowForm, setIsShowForm] = useState<boolean>(false);
 
   const updateTaskStatus = (taskId: string, oldStatus: Status, newStatus: Status) => {
     setTasks(prevTasks =>
@@ -47,6 +49,10 @@ function App() {
     readTasks();
   }
 
+  const showForm = () => {
+    setIsShowForm(!isShowForm)
+  }
+
   return (
     <>
       <Header />
@@ -55,13 +61,18 @@ function App() {
         <IconContext.Provider value={{size: "2.5em"}}>
           <div className="flex justify-end">
             <div onClick={reload}>
-              <IoReload className="w-full"/>
+              <IoReload className="w-full"/>Reload
             </div>
-            <div>
-              <IoIosAddCircleOutline />
+            <div className="ml-5" onClick={showForm}>
+              <IoIosAddCircleOutline />Add
             </div>
           </div>
         </IconContext.Provider>
+        <div className={`transition-all duration-500 ease-in-out overflow-hidden ${
+          isShowForm ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+        }`}>
+          <CreateForm />
+        </div>
         <div className="flex justify-center mx-auto w-full max-w-6xl">
           <Lane tasks={tasks} statusLabel={Status.TODO} updateTaskStatus={updateTaskStatus} />
           <Lane tasks={tasks} statusLabel={Status.DOING} updateTaskStatus={updateTaskStatus} />
