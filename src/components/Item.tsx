@@ -6,11 +6,10 @@ import { MdDone } from "react-icons/md";
 
 function Item({ task, updateTaskStatus }: { task: Task; updateTaskStatus: (taskId: string, oldStatus: Status, newStatus: Status) => void }) {
   return (
-    <div style={{ border: '1px solid #ccc', padding: '8px', margin: '4px' }}>
-      <h3>{task.title}</h3>
+    <div className="border border-gray-300 p-2 m-1">
+      <p className="font-bold">{task.title}</p>
       <p>{task.description}</p>
-      <p>Current Status: {task.status}</p>
-      <div>
+      <div className="flex">
         <div onClick={() => updateTaskStatus(task.id, task.status as Status, Status.DOING)}>
           <FaPlay />
         </div>

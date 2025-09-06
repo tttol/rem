@@ -50,11 +50,11 @@ function App() {
     <>
       <Header />
       <p>{server_message}</p>
-      <main className="flex justify-center w-full px-2">
+      <main className="w-full px-8 text-center">
         <div onClick={reload}>
           <IoReload />
         </div>
-        <div className="flex">
+        <div className="flex justify-center mx-auto w-full max-w-6xl">
           <Lane tasks={tasks} statusLabel={Status.TODO} updateTaskStatus={updateTaskStatus} />
           <Lane tasks={tasks} statusLabel={Status.DOING} updateTaskStatus={updateTaskStatus} />
           <Lane tasks={tasks} statusLabel={Status.PENDING} updateTaskStatus={updateTaskStatus} />
