@@ -25,7 +25,7 @@ pub fn read_all(app_handle: &AppHandle) -> Result<Vec<Task>, tauri::Error> {
 pub fn read_single(app_handle: &AppHandle, task_id: &str, status: &str) -> Result<Task, tauri::Error> {
     let app_data_dir = app_data_dir::get(app_handle)?;
     let file_path = app_data_dir.join(status).join(format!("{}.json", task_id));
-    let content = file::read_single_file(&file_path)?;
+    let content = file::read(&file_path)?;
     let task = task_util::string_to_task(&content)?;
 
     Ok(task)
@@ -54,7 +54,7 @@ fn read_tasks_by_status(target_path: &PathBuf) -> Result<Vec<Task>, tauri::Error
         }
         
         
-        match file::read_single_file(&file_path) {
+        match file::read(&file_path) {
             Ok(content) => {
                 match task_util::string_to_task(&content) {
                     Ok(mut task) => {

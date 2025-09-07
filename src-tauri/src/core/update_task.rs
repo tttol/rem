@@ -16,7 +16,7 @@ pub fn update_content(app_handle: &AppHandle, task_id: &str, status: &str, title
     let task_string = task_util::task_to_string(&modified_data)?;
     
     info!("updated content data={:?}", modified_data);
-    file::create(&task_string, &app_data_dir.join(&status).join(format!("{}.json", task_id)))
+    file::write(&task_string, &app_data_dir.join(&status).join(format!("{}.json", task_id)))
         .map_err(|e| tauri::Error::Io(e))
 }
 

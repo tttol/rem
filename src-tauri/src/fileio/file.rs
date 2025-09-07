@@ -2,7 +2,7 @@ use std::{fs::File, io::{Read, Write}, path::PathBuf};
 use tauri::Manager;
 use log::{info};
 
-pub fn read_single_file(path: &PathBuf) -> std::io::Result<String> {
+pub fn read(path: &PathBuf) -> std::io::Result<String> {
     info!("Reading the {:?}", &path);
     let mut f = File::open(path)?;
     let mut data = String::new();
@@ -23,7 +23,11 @@ pub fn create(data: &str, path: &PathBuf) -> std::io::Result<()> {
     Ok(())
 }
 
-fn write(data: &str, filename: &str) {
+pub fn write(data: &str, path: &PathBuf) -> std::io::Result<()> {
+    info!("Write to {:?}", &path);
+    let mut f = File::create(path)?;
+    f.write_all(data.as_bytes())?;
+    Ok(())
 }
 
 #[cfg(test)]
