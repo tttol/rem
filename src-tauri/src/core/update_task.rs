@@ -1,6 +1,6 @@
 use std::path;
 
-use crate::{core::{read_task, task::Task}, fileio::{self, file}};
+use crate::{core::{read_task, task::Task, task_util}, fileio::{self, file}};
 use fileio::app_data_dir;
 use log::info;
 use tauri::AppHandle;
@@ -19,7 +19,7 @@ pub fn update_status(app_handle: &AppHandle, task_id: &str, old_status: &str, ne
         status: new_status.to_string(),
         description: original_data.description
     };
-    let task_string = task_to_string(&modified_data)
+    let task_string = task_util::task_to_string(&modified_data)
         .map_err(|e| tauri::Error::Io(std::io::Error::new(std::io::ErrorKind::InvalidData, e)))?;
     
     info!("updated data={:?}", modified_data);
@@ -38,6 +38,3 @@ pub fn update_status(app_handle: &AppHandle, task_id: &str, old_status: &str, ne
     }
 }
 
-fn task_to_string(task: &Task) -> Result<String, serde_json::Error> {
-    serde_json::to_string_pretty(task)
-}

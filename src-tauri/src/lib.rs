@@ -2,6 +2,7 @@ mod core;
 mod fileio;
 use core::read_task;
 use core::update_task;
+use core::create_task;
 use core::task;
 
 use log::info;
@@ -11,6 +12,12 @@ use log::info;
 fn get_all_task(app_handle: tauri::AppHandle) -> Result<Vec<task::Task>, tauri::Error>{
     info!("Calling get_all_task");
     read_task::read_all(&app_handle).map_err(|e| tauri::Error::from(e))
+}
+
+#[tauri::command]
+fn create_task(app_handle: tauri::AppHandle, title: &str, description: &str) -> Result<(), tauri::Error> {
+    info!("Calling create_task");
+    create_task::create(&app_handle, &title, &description)
 }
 
 #[tauri::command]
@@ -26,7 +33,7 @@ pub fn run() {
         .init();
     tauri::Builder::default()
         .plugin(tauri_plugin_opener::init())
-        .invoke_handler(tauri::generate_handler![get_all_task, update_task_status])
+        .invoke_handler(tauri::generate_handler![get_all_task, update_task_status, create_task])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

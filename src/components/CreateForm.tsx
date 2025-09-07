@@ -12,14 +12,15 @@ function CreateForm({setIsShowForm, reload}: {setIsShowForm: (isShowForm: boolea
     register,
     handleSubmit,
     watch,
-    formState: {errors}
+    formState: {errors},
+    reset
   } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     setIsShowForm(false);
 
     invoke('create_task', {title: data.title, description: data.description})
       .then(() => {
-        console.log('create success');
+        reset();
         reload();
       })
       .catch(err => {
@@ -27,23 +28,33 @@ function CreateForm({setIsShowForm, reload}: {setIsShowForm: (isShowForm: boolea
       });
   }
 
+  const resetValidationErrorStyle = () => { 
+    const input = document.querySelector('#title');
+    input?.classList.remove('border-red-500 focus:ring-red-500');
+    input?.classList.add('border-gray-300 focus:ring-blue-500');
+  };
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="max-w-md mx-auto p-4">
       <p className="text-2xl">Add a new task</p>
       <div className="mb-4">
         <input 
+          id="title"
           type="text" 
           defaultValue="" 
           placeholder="title"
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          {...register("title")} 
+          autoCapitalize="off"
+          className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:border-transparent ${errors.title ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-blue-500'}`}
+          {...register("title", { required: "Title is required" })} 
         />
+        {errors.title && <p className="text-red-500 text-sm mt-1 text-left font-bold">{errors.title.message}</p>}
       </div>
       <div className="mb-4">
         <textarea 
           defaultValue="" 
           placeholder="description"
           rows={4}
+          autoCapitalize="off"
           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-vertical"
           {...register("description")} 
         />

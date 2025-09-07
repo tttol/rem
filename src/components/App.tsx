@@ -44,6 +44,7 @@ function App() {
   }, []);
 
   const reload = () => {
+    setIsShowForm(false);
     setTasks([]);
     setMessage("");
     readTasks();

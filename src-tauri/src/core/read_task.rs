@@ -1,7 +1,7 @@
 use std::{fs, path::PathBuf};
 use tauri::{AppHandle, Manager};
 use log::{info};
-use crate::{core::task::Task, fileio::{file, app_data_dir}};
+use crate::{core::{task::Task, task_util}, fileio::{app_data_dir, file}};
 
 pub fn read_all(app_handle: &AppHandle) -> Result<Vec<Task>, tauri::Error> {
     let app_data_dir = app_data_dir::get(app_handle)?;
@@ -26,7 +26,7 @@ pub fn read_single(app_handle: &AppHandle, task_id: &str, status: &str) -> Resul
     let app_data_dir = app_data_dir::get(app_handle)?;
     let file_path = app_data_dir.join(status).join(format!("{}.json", task_id));
     let content = file::read_single_file(&file_path)?;
-    let task = string_to_task(&content)?;
+    let task = task_util::string_to_task(&content)?;
 
     Ok(task)
 }
@@ -56,7 +56,7 @@ fn read_tasks_by_status(target_path: &PathBuf) -> Result<Vec<Task>, tauri::Error
         
         match file::read_single_file(&file_path) {
             Ok(content) => {
-                match string_to_task(&content) {
+                match task_util::string_to_task(&content) {
                     Ok(mut task) => {
                         task.status = status.to_string();
                         tasks.push(task);
@@ -70,8 +70,4 @@ fn read_tasks_by_status(target_path: &PathBuf) -> Result<Vec<Task>, tauri::Error
     Ok(tasks)
 }
 
-fn string_to_task(content: &str) -> Result<Task, tauri::Error> {
-    let task = serde_json::from_str(content)?;
-    Ok(task)
-}
 
