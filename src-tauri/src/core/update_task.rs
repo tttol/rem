@@ -5,8 +5,19 @@ use fileio::app_data_dir;
 use log::info;
 use tauri::AppHandle;
 
-pub fn update() {
-
+pub fn update_content(app_handle: &AppHandle, task_id: &str, status: &str, title: &str, description: &str) -> Result<(), tauri::Error> {
+    let app_data_dir = app_data_dir::get(app_handle)?;
+    let modified_data = Task {
+        id: task_id.to_string(),
+        title: title.to_string(),
+        status: status.to_string(),
+        description: description.to_string()
+    };
+    let task_string = task_util::task_to_string(&modified_data)?;
+    
+    info!("updated content data={:?}", modified_data);
+    file::create(&task_string, &app_data_dir.join(&status).join(format!("{}.json", task_id)))
+        .map_err(|e| tauri::Error::Io(e))
 }
 
 

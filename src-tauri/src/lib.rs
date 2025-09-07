@@ -26,6 +26,12 @@ fn update_task_status(app_handle: tauri::AppHandle, task_id: &str, old_status: &
     update_task::update_status(&app_handle, task_id, old_status, new_status)
 }
 
+#[tauri::command]
+fn update_task_content(app_handle: tauri::AppHandle, task_id: &str, status: &str, title: &str, description: &str) -> Result<(), tauri::Error> {
+    info!("Calling update_task_content");
+    update_task::update_content(&app_handle, task_id, status, title, description)
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     env_logger::Builder::from_default_env()
@@ -33,7 +39,7 @@ pub fn run() {
         .init();
     tauri::Builder::default()
         .plugin(tauri_plugin_opener::init())
-        .invoke_handler(tauri::generate_handler![get_all_task, update_task_status, create_task])
+        .invoke_handler(tauri::generate_handler![get_all_task, update_task_status, create_task, update_task_content])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

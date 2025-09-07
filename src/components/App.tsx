@@ -75,10 +75,10 @@ function App() {
           <CreateForm setIsShowForm={setIsShowForm} reload={reload} />
         </div>
         <div className="flex justify-center mx-auto w-full max-w-6xl">
-          <Lane tasks={tasks} statusLabel={Status.TODO} updateTaskStatus={updateTaskStatus} />
-          <Lane tasks={tasks} statusLabel={Status.DOING} updateTaskStatus={updateTaskStatus} />
-          <Lane tasks={tasks} statusLabel={Status.PENDING} updateTaskStatus={updateTaskStatus} />
-          <Lane tasks={tasks} statusLabel={Status.DONE} updateTaskStatus={updateTaskStatus} />
+          <Lane tasks={tasks} statusLabel={Status.TODO} updateTaskStatus={updateTaskStatus} reload={reload} />
+          <Lane tasks={tasks} statusLabel={Status.DOING} updateTaskStatus={updateTaskStatus} reload={reload} />
+          <Lane tasks={tasks} statusLabel={Status.PENDING} updateTaskStatus={updateTaskStatus} reload={reload} />
+          <Lane tasks={tasks} statusLabel={Status.DONE} updateTaskStatus={updateTaskStatus} reload={reload} />
         </div>
       </main>
     </>
