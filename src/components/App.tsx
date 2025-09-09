@@ -14,13 +14,38 @@ function App() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [server_message, setMessage] = useState<string>();
   const [isShowForm, setIsShowForm] = useState<boolean>(false);
+  const [fadingTasks, setFadingTasks] = useState<Set<string>>(new Set());
+  const [fadingInTasks, setFadingInTasks] = useState<Set<string>>(new Set());
 
   const updateTaskStatus = (taskId: string, oldStatus: Status, newStatus: Status) => {
-    setTasks(prevTasks =>
-      prevTasks.map(task =>
-        task.id === taskId ? { ...task, status: newStatus } : task
-      )
-    );
+    // Start fade out animation
+    setFadingTasks(prev => new Set([...prev, taskId]));
+    
+    // Update task status after fade animation
+    setTimeout(() => {
+      setTasks(prevTasks =>
+        prevTasks.map(task =>
+          task.id === taskId ? { ...task, status: newStatus } : task
+        )
+      );
+      // Remove from fading tasks and start fade in
+      setFadingTasks(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(taskId);
+        return newSet;
+      });
+      setFadingInTasks(prev => new Set([...prev, taskId]));
+      
+      // Remove from fading in tasks after animation
+      setTimeout(() => {
+        setFadingInTasks(prev => {
+          const newSet = new Set(prev);
+          newSet.delete(taskId);
+          return newSet;
+        });
+      }, 300);
+    }, 300);
+    
     invoke('update_task_status', {taskId: taskId, oldStatus: oldStatus, newStatus: newStatus})
       .then(() => {
         console.log('update success');
@@ -28,6 +53,22 @@ function App() {
       .catch(err => {
         console.error('update failed:', err);
         setMessage(`Failed to update task. ${err}`);
+        // Revert the status change and remove from fading if the update fails
+        setFadingTasks(prev => {
+          const newSet = new Set(prev);
+          newSet.delete(taskId);
+          return newSet;
+        });
+        setFadingInTasks(prev => {
+          const newSet = new Set(prev);
+          newSet.delete(taskId);
+          return newSet;
+        });
+        setTasks(prevTasks =>
+          prevTasks.map(task =>
+            task.id === taskId ? { ...task, status: oldStatus } : task
+          )
+        );
       });
   };
 
@@ -75,9 +116,9 @@ function App() {
           <CreateForm setIsShowForm={setIsShowForm} reload={reload} />
         </div>
         <div className="flex justify-center mx-auto w-full max-w-6xl">
-          <Lane tasks={tasks} statusLabel={Status.TODO} updateTaskStatus={updateTaskStatus} reload={reload} />
-          <Lane tasks={tasks} statusLabel={Status.DOING} updateTaskStatus={updateTaskStatus} reload={reload} />
-          <Lane tasks={tasks} statusLabel={Status.DONE} updateTaskStatus={updateTaskStatus} reload={reload} />
+          <Lane tasks={tasks} statusLabel={Status.TODO} updateTaskStatus={updateTaskStatus} reload={reload} fadingTasks={fadingTasks} fadingInTasks={fadingInTasks} />
+          <Lane tasks={tasks} statusLabel={Status.DOING} updateTaskStatus={updateTaskStatus} reload={reload} fadingTasks={fadingTasks} fadingInTasks={fadingInTasks} />
+          <Lane tasks={tasks} statusLabel={Status.DONE} updateTaskStatus={updateTaskStatus} reload={reload} fadingTasks={fadingTasks} fadingInTasks={fadingInTasks} />
         </div>
       </main>
     </div>

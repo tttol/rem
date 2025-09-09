@@ -51,7 +51,7 @@ function Item({ task, updateTaskStatus, reload }: { task: Task; updateTaskStatus
   const isCompleted = task.status === Status.DONE;
 
   return (
-    <div className="border border-gray-600 bg-gray-800 p-2 m-1 text-white">
+    <div className="border border-gray-600 bg-gray-800 p-2 m-1 text-white transition-all duration-300 ease-in-out">
       <div className="text-left">
         {isEditing ? (
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
