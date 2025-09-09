@@ -55,16 +55,16 @@ function App() {
   }
 
   return (
-    <>
+    <div className="min-h-screen bg-gray-900 text-white">
       <Header />
-      <p>{server_message}</p>
+      <p className="text-red-400">{server_message}</p>
       <main className="w-full px-8 text-center">
         <IconContext.Provider value={{size: "2.5em"}}>
-          <div className="flex justify-end">
-            <div onClick={reload}>
+          <div className="flex justify-end text-gray-300">
+            <div onClick={reload} className="cursor-pointer hover:text-white transition-colors">
               <IoReload className="w-full"/>Reload
             </div>
-            <div className="ml-5" onClick={showForm}>
+            <div className="ml-5 cursor-pointer hover:text-white transition-colors" onClick={showForm}>
               <IoIosAddCircleOutline />Add
             </div>
           </div>
@@ -77,11 +77,10 @@ function App() {
         <div className="flex justify-center mx-auto w-full max-w-6xl">
           <Lane tasks={tasks} statusLabel={Status.TODO} updateTaskStatus={updateTaskStatus} reload={reload} />
           <Lane tasks={tasks} statusLabel={Status.DOING} updateTaskStatus={updateTaskStatus} reload={reload} />
-          <Lane tasks={tasks} statusLabel={Status.PENDING} updateTaskStatus={updateTaskStatus} reload={reload} />
           <Lane tasks={tasks} statusLabel={Status.DONE} updateTaskStatus={updateTaskStatus} reload={reload} />
         </div>
       </main>
-    </>
+    </div>
   );
 }
 

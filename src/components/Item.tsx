@@ -3,6 +3,7 @@ import { Task } from "../dto";
 import { Status } from "../enum";
 import { LuUndo2 } from "react-icons/lu";
 import { MdDone } from "react-icons/md";
+import { ImArrowLeft2 } from "react-icons/im";
 import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { invoke } from "@tauri-apps/api/core";
@@ -46,8 +47,11 @@ function Item({ task, updateTaskStatus, reload }: { task: Task; updateTaskStatus
       description: task.description
     });
   };
+  
+  const isCompleted = task.status === Status.DONE;
+
   return (
-    <div className="border border-gray-300 p-2 m-1">
+    <div className="border border-gray-600 bg-gray-800 p-2 m-1 text-white">
       <div className="text-left">
         {isEditing ? (
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
@@ -55,7 +59,7 @@ function Item({ task, updateTaskStatus, reload }: { task: Task; updateTaskStatus
               <input
                 type="text"
                 autoCapitalize="off"
-                className={`w-full px-2 py-1 border rounded text-sm ${errors.title ? 'border-red-500' : 'border-gray-300'}`}
+                className={`w-full px-2 py-1 border rounded text-sm bg-gray-700 text-white ${errors.title ? 'border-red-500' : 'border-gray-500'}`}
                 {...register("title", { required: "Title is required" })}
               />
               {errors.title && <p className="text-red-500 text-xs">{errors.title.message}</p>}
@@ -64,7 +68,7 @@ function Item({ task, updateTaskStatus, reload }: { task: Task; updateTaskStatus
               <textarea
                 rows={3}
                 autoCapitalize="off"
-                className="w-full px-2 py-1 border border-gray-300 rounded text-sm resize-vertical"
+                className="w-full px-2 py-1 border border-gray-500 bg-gray-700 text-white rounded text-sm resize-vertical"
                 {...register("description")}
               />
             </div>
@@ -87,26 +91,53 @@ function Item({ task, updateTaskStatus, reload }: { task: Task; updateTaskStatus
         ) : (
           <>
             <div className="flex justify-between items-center">
-              <p className="font-bold">{task.title}</p>
-              <FaEdit className="cursor-pointer" onClick={handleEditClick} />
+              <p className={`font-bold ${isCompleted ? 'line-through text-gray-400' : ''}`}>{task.title}</p>
+              <FaEdit className="cursor-pointer hover:text-gray-300" onClick={handleEditClick} />
             </div>
-            <p>{task.description}</p>
+            <p className={isCompleted ? 'line-through text-gray-400' : ''}>{task.description}</p>
+            <div className="flex space-x-2 mt-2">
+              {task.status === Status.DONE ? (
+                <div 
+                  className="flex items-center space-x-1 px-3 py-1 border border-blue-400 rounded-full cursor-pointer text-blue-400 hover:bg-blue-400 hover:text-white transition-colors"
+                  onClick={() => updateTaskStatus(task.id, task.status as Status, Status.TODO)}
+                >
+                  <ImArrowLeft2 className="text-xs" />
+                  <span className="text-sm">Again</span>
+                </div>
+              ) : (
+                <>
+                  {task.status !== Status.DOING && (
+                    <div 
+                      className="flex items-center space-x-1 px-3 py-1 border border-green-400 rounded-full cursor-pointer text-green-400 hover:bg-green-400 hover:text-white transition-colors"
+                      onClick={() => updateTaskStatus(task.id, task.status as Status, Status.DOING)}
+                    >
+                      <FaPlay className="text-xs" />
+                      <span className="text-sm">Start</span>
+                    </div>
+                  )}
+                  {task.status !== Status.TODO && (
+                    <div 
+                      className="flex items-center space-x-1 px-3 py-1 border border-blue-400 rounded-full cursor-pointer text-blue-400 hover:bg-blue-400 hover:text-white transition-colors"
+                      onClick={() => updateTaskStatus(task.id, task.status as Status, Status.TODO)}
+                    >
+                      <FaPause className="text-xs" />
+                      <span className="text-sm">Cancel</span>
+                    </div>
+                  )}
+                  {task.status !== Status.DONE && (
+                    <div 
+                      className="flex items-center space-x-1 px-3 py-1 border border-gray-400 rounded-full cursor-pointer text-gray-400 hover:bg-gray-400 hover:text-white transition-colors"
+                      onClick={() => updateTaskStatus(task.id, task.status as Status, Status.DONE)}
+                    >
+                      <MdDone className="text-xs" />
+                      <span className="text-sm">Complete</span>
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
           </>
         )}
-      </div>
-      <div className="flex">
-        <div onClick={() => updateTaskStatus(task.id, task.status as Status, Status.DOING)}>
-          <FaPlay className="cursor-pointer" />
-        </div>
-        <div onClick={() => updateTaskStatus(task.id, task.status as Status, Status.PENDING)}>
-          <FaPause className="cursor-pointer" />
-        </div>
-        <div onClick={() => updateTaskStatus(task.id, task.status as Status, Status.TODO)}>
-          <LuUndo2 />
-        </div>
-        <div onClick={() => updateTaskStatus(task.id, task.status as Status, Status.DONE)}>
-          <MdDone />
-        </div>
       </div>
     </div>
   );
