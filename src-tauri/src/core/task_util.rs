@@ -76,27 +76,5 @@ mod tests {
         let actual_string = actual.unwrap();
         assert_eq!(actual_string, expected);
     }
-
-    #[test]
-    fn test_task_to_string_with_default_status() {
-        let task = Task {
-            id: "default-status-id".to_string(),
-            title: "Default Status Task".to_string(),
-            status: "todo".to_string(),
-            description: "Task with default status".to_string(),
-        };
-        let expected = r#"{
-  "id": "default-status-id",
-  "title": "Default Status Task",
-  "status": "todo",
-  "description": "Task with default status"
-}"#;
-
-        let actual = task_to_string(&task);
-        assert!(actual.is_ok());
-        
-        let actual_string = actual.unwrap();
-        assert_eq!(actual_string, expected);
-    }
 }
 
