@@ -5,11 +5,11 @@ use tauri::{AppHandle, Manager};
 
 pub fn get(app_handle: &AppHandle) -> Result<PathBuf, tauri::Error> {
     let base_dir = if cfg!(debug_assertions) {
-        // Development environment: use a dev-specific directory
-        let current_dir = std::env::current_dir().map_err(|e| {
+        // Development environment: use ~/rem/tmp/ directory
+        let home_dir = std::env::var("HOME").map_err(|e| {
             std::io::Error::new(std::io::ErrorKind::Other, e)
         })?;
-        current_dir.join("dev_data")
+        PathBuf::from(home_dir).join("rem").join("tmp")
     } else {
         // Production environment: use standard app data directory
         app_handle.path().app_data_dir().map_err(|e| {
