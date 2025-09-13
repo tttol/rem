@@ -3,7 +3,7 @@ use tempfile::TempDir;
 use rem_lib::core::{task::Task, update_task};
 
 #[test]
-fn should_update_title_and_content() {
+fn update_title_and_content() {
     // Arrange
     let temp_dir = TempDir::new().expect("Failed to create temp directory");
     let app_data_dir = temp_dir.path().to_path_buf();
