@@ -3031,6 +3031,7 @@ dependencies = [
  "tauri-build",
  "tauri-plugin-opener",
  "tauri-runtime",
+ "tempfile",
 ]
 
 [[package]]

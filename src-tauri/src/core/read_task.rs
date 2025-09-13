@@ -3,15 +3,14 @@ use tauri::{AppHandle, Manager};
 use log::{info};
 use crate::{core::{task::Task, task_util}, fileio::{app_data_dir, file}};
 
-pub fn read_all(app_handle: &AppHandle) -> Result<Vec<Task>, tauri::Error> {
-    let app_data_dir = app_data_dir::get(app_handle)?;
+pub fn read_all(app_data_dir: &PathBuf) -> Result<Vec<Task>, tauri::Error> {
     let mut all_tasks: Vec<Task> = Vec::new();
     
     for status in &["todo", "doing", "done", "pending"] {
         let path = app_data_dir.join(status);
 
         // create a directory if it does not exist.
-        std::fs::create_dir_all(&path);
+        let _ = std::fs::create_dir_all(&path);
 
         let tasks = read_tasks_by_status(&path)?;
         info!("{}={:?}", &status, tasks);
@@ -69,5 +68,4 @@ fn read_tasks_by_status(target_path: &PathBuf) -> Result<Vec<Task>, tauri::Error
     }
     Ok(tasks)
 }
-
 

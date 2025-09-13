@@ -1,5 +1,5 @@
-mod core;
-mod fileio;
+pub mod core;
+pub mod fileio;
 use core::read_task;
 use core::update_task;
 use core::create_task;
@@ -7,11 +7,14 @@ use core::task;
 
 use log::info;
 
+use crate::fileio::app_data_dir;
+
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
 #[tauri::command]
 fn get_all_task(app_handle: tauri::AppHandle) -> Result<Vec<task::Task>, tauri::Error>{
     info!("Calling get_all_task");
-    read_task::read_all(&app_handle).map_err(|e| tauri::Error::from(e))
+    let app_data_dir = app_data_dir::get(&app_handle)?;
+    read_task::read_all(&app_data_dir).map_err(|e| tauri::Error::from(e))
 }
 
 #[tauri::command]
