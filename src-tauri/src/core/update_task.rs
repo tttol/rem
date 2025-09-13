@@ -1,12 +1,9 @@
-use std::path;
+use std::path::PathBuf;
 
-use crate::{core::{read_task, task::Task, task_util}, fileio::{self, file}};
-use fileio::app_data_dir;
+use crate::{core::{task::Task, task_util}, fileio::file};
 use log::info;
-use tauri::AppHandle;
 
-pub fn update_content(app_handle: &AppHandle, task_id: &str, status: &str, title: &str, description: &str) -> Result<(), tauri::Error> {
-    let app_data_dir = app_data_dir::get(app_handle)?;
+pub fn update_content(app_data_dir: &PathBuf, task_id: &str, status: &str, title: &str, description: &str) -> Result<(), tauri::Error> {
     let modified_data = Task {
         id: task_id.to_string(),
         title: title.to_string(),
@@ -21,9 +18,11 @@ pub fn update_content(app_handle: &AppHandle, task_id: &str, status: &str, title
 }
 
 
-pub fn update_status(app_handle: &AppHandle, task_id: &str, old_status: &str, new_status: &str) -> Result<(), tauri::Error> {
-    let app_data_dir = app_data_dir::get(app_handle)?;
-    let original_data = read_task::read_single(app_handle, task_id, old_status)?;
+pub fn update_status(app_data_dir: &PathBuf, task_id: &str, old_status: &str, new_status: &str) -> Result<(), tauri::Error> {
+    let file_path = app_data_dir.join(old_status).join(format!("{}.json", task_id));
+    let content = file::read(&file_path)?;
+    let original_data = task_util::string_to_task(&content)?;
+    
     let modified_data = Task {
         id: task_id.to_string(),
         title: original_data.title,
