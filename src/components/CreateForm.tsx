@@ -11,7 +11,6 @@ function CreateForm({setIsShowForm, reload}: {setIsShowForm: (isShowForm: boolea
   const {
     register,
     handleSubmit,
-    watch,
     formState: {errors},
     reset
   } = useForm<Inputs>();
@@ -28,11 +27,6 @@ function CreateForm({setIsShowForm, reload}: {setIsShowForm: (isShowForm: boolea
       });
   }
 
-  const resetValidationErrorStyle = () => { 
-    const input = document.querySelector('#title');
-    input?.classList.remove('border-red-500 focus:ring-red-500');
-    input?.classList.add('border-gray-300 focus:ring-blue-500');
-  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="max-w-md mx-auto p-4 bg-gray-800 rounded-lg border border-gray-600">

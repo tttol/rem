@@ -1,4 +1,3 @@
-import { IoIosAddCircleOutline } from 'react-icons/io';
 import { Task } from '../dto';
 import { Status } from '../enum';
 import Item from './Item';

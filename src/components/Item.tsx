@@ -1,7 +1,6 @@
 import { FaPause, FaPlay, FaEdit } from "react-icons/fa";
 import { Task } from "../dto";
 import { Status } from "../enum";
-import { LuUndo2 } from "react-icons/lu";
 import { MdDone } from "react-icons/md";
 import { ImArrowLeft2 } from "react-icons/im";
 import { useState } from "react";
@@ -124,7 +123,7 @@ function Item({ task, updateTaskStatus, reload }: { task: Task; updateTaskStatus
                       <span className="text-sm">Cancel</span>
                     </div>
                   )}
-                  {task.status !== Status.DONE && (
+                  {(task.status as Status) !== Status.DONE && (
                     <div 
                       className="flex items-center space-x-1 px-3 py-1 border border-gray-400 rounded-full cursor-pointer text-gray-400 hover:bg-gray-400 hover:text-white transition-colors"
                       onClick={() => updateTaskStatus(task.id, task.status as Status, Status.DONE)}
