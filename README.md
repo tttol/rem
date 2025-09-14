@@ -4,7 +4,7 @@ REM is a memo application. This app is desktop application built with [TAURI](ht
 - Backend: Rust
 
 # Installation
-1. 
+Download a binary file(.dmg) from [https://github.com/tttol/rem/releases/download/1.0.0/rem_1.0.0_aarch64.dmg](https://github.com/tttol/rem/releases/download/1.0.0/rem_1.0.0_aarch64.dmg)
 
 # Develop build
 ```sh
