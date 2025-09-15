@@ -4,6 +4,9 @@
 REM is a desktop application for task management. REM's data stays completely local, stored as JSON files on your machine. Nothing is sent to cloud storage or external servers.
 
 # Installation
+> [!WARNING]
+> REM runs on macOS only - Windows and Linux aren't supported.
+> 
 Download `.dmg` file from [https://github.com/tttol/rem/releases/download/1.0.0/rem_1.0.0_aarch64.dmg](https://github.com/tttol/rem/releases/download/1.0.0/rem_1.0.0_aarch64.dmg)
 
 # Usage
