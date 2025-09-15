@@ -6,6 +6,11 @@ REM is a desktop application for task management. REM's data stays completely lo
 # Installation
 Download `.dmg` file from [https://github.com/tttol/rem/releases/download/1.0.0/rem_1.0.0_aarch64.dmg](https://github.com/tttol/rem/releases/download/1.0.0/rem_1.0.0_aarch64.dmg)
 
+# Usage
+<img width="1996" height="1602" alt="image" src="https://github.com/tttol/rem/blob/main/docs/demo2.gif?raw=true" />
+
+
+
 # Tech Stack
 This app is desktop application built with [TAURI](https://v2.tauri.app/).
 - Frontend: React.js
