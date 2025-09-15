@@ -3,7 +3,6 @@ name: Release macOS
 on:
   push:
     tags:
-      - 'v*'
 
 jobs:
   build:
