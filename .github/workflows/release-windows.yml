@@ -1,0 +1,69 @@
+name: Release Windows
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: [windows-latest]
+        target:
+          - x86_64-pc-windows-msvc
+          - i686-pc-windows-msvc
+          - aarch64-pc-windows-msvc
+
+    runs-on: ${{ matrix.platform }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install VBSCRIPT for MSI (Windows)
+        if: matrix.target == 'x86_64-pc-windows-msvc' || matrix.target == 'i686-pc-windows-msvc'
+        run: |
+          # VBSCRIPT is enabled by default on most Windows installations
+          # This step is included for documentation purposes
+          echo "Checking VBSCRIPT availability for MSI builds"
+
+      - name: Install ARM64 build tools (Windows)
+        if: matrix.target == 'aarch64-pc-windows-msvc'
+        run: |
+          # ARM64 build tools should be pre-installed on GitHub Actions windows-latest
+          # This step is included for documentation purposes
+          echo "ARM64 build tools required for aarch64 target"
+
+      - name: Rust setup
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+
+      - name: Rust cache
+        uses: swatinem/rust-cache@v2
+        with:
+          workspaces: './src-tauri -> target'
+
+      - name: Sync node version and setup cache
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+          cache: 'npm'
+
+      - name: Install frontend dependencies
+        run: npm install
+
+      - name: Build the app
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tagName: ${{ github.ref_name }}
+          releaseName: 'REM v__VERSION__'
+          releaseBody: 'See the assets to download and install this version.'
+          releaseDraft: true
+          prerelease: false
+          args: --target ${{ matrix.target }} --bundles nsis,msi
