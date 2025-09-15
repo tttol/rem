@@ -53,8 +53,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tagName: ${{ github.ref_name }}
-          releaseName: '__VERSION__'
+          releaseName: ${{ github.ref_name }}
           releaseBody: 'See the assets to download and install this version.'
-          releaseDraft: true
+          releaseDraft: false
           prerelease: false
           args: --target ${{ matrix.target }} --bundles dmg
