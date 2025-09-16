@@ -9,7 +9,7 @@ REM is a desktop application for task management. REM's data stays completely lo
 
 | Platform | Architecture | Download |
 |----------|-------------|----------|
-| **macOS** | Apple Silicon (M1/M2/M3) | [rem_1.0.0_aarch64.dmg](https://github.com/tttol/rem/releases/download/1.0.0/rem_1.0.0_aarch64.dmg) |
+| **macOS** | Apple Silicon | [rem_1.0.0_aarch64.dmg](https://github.com/tttol/rem/releases/download/1.0.0/rem_1.0.0_aarch64.dmg) |
 | **macOS** | Intel | [rem_1.0.0_x64.dmg](https://github.com/tttol/rem/releases/download/1.0.0/rem_1.0.0_x64.dmg) |
 | **Windows** | 64-bit (exe) | [rem_1.0.0_x64-setup.exe](https://github.com/tttol/rem/releases/download/1.0.0/rem_1.0.0_x64-setup.exe) |
 | **Windows** | 64-bit (msi) | [rem_1.0.0_x64_en-US.msi](https://github.com/tttol/rem/releases/download/1.0.0/rem_1.0.0_x64_en-US.msi) |
