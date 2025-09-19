@@ -93,7 +93,7 @@ function Item({ task, updateTaskStatus, reload }: { task: Task; updateTaskStatus
               <p className={`font-bold ${isCompleted ? 'line-through text-gray-400' : ''}`}>{task.title}</p>
               <FaEdit className="cursor-pointer hover:text-gray-300" onClick={handleEditClick} />
             </div>
-            <p className={isCompleted ? 'line-through text-gray-400' : ''}>{task.description}</p>
+            <p className={`whitespace-pre-wrap ${isCompleted ? 'line-through text-gray-400' : ''}`}>{task.description}</p>
             <div className="flex space-x-2 mt-2">
               {task.status === Status.DONE ? (
                 <div 
