@@ -1,6 +1,6 @@
 [package]
 name = "rem"
-version = "1.0.0"
+version = "1.0.3"
 description = "A memo application"
 authors = ["tttol"]
 edition = "2021"
