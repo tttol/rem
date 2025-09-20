@@ -37,6 +37,11 @@ npm run tauri dev
 ```
 
 # Release build
+### Windows
+GitHub Actions automatically creates Windows release binaries whenever a git tag is created.
+
+### Mac
+Mac release binaries must be created manually. The explanation for why GitHub CI isn't used for Mac builds can be found in [this PR](https://github.com/tttol/rem/pull/5).
 ```bash
 npm run tauri build -- --target universal-apple-darwin --bundles dmg
 ```
