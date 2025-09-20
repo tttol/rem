@@ -38,7 +38,8 @@ npm run tauri dev
 
 # Release build
 ```bash
-npm run tauri build -- --bundles dmg
+npm run tauri build -- --target universal-apple-darwin --bundles dmg
 ```
-ref: https://tauri.app/distribute/dmg/
+- `universal-apple-darwin` is an option of the universal binary that is compatible for both Aplle Silicon and Intel.
+- ref: https://tauri.app/distribute/dmg/
 
