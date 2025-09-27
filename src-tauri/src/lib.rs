@@ -45,6 +45,7 @@ pub fn run() {
         .init();
     tauri::Builder::default()
         .plugin(tauri_plugin_opener::init())
+        .plugin(tauri_plugin_shell::init())
         .invoke_handler(tauri::generate_handler![get_all_task, update_task_status, create_task, update_task_content])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
