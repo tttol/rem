@@ -6,6 +6,7 @@ import { ImArrowLeft2 } from "react-icons/im";
 import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { invoke } from "@tauri-apps/api/core";
+import { openUrl } from '@tauri-apps/plugin-opener';
 
 type EditInputs = {
   title: string;
@@ -48,6 +49,29 @@ function Item({ task, updateTaskStatus, reload }: { task: Task; updateTaskStatus
   };
   
   const isCompleted = task.status === Status.DONE;
+
+  const renderLinkText = (text: string) => {
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    const parts = text.split(urlRegex);
+
+    return parts.map((part, index) => {
+      if (part.match(urlRegex)) {
+        return (
+          <span
+            key={index}
+            className="text-blue-400 underline cursor-pointer hover:text-blue-300"
+            onClick={async () => {
+              console.log("clcked");
+              await openUrl(part);
+            }}
+          >
+            {part}
+          </span>
+        );
+      }
+      return part;
+    });
+  };
 
   return (
     <div className="border border-gray-600 bg-gray-800 p-2 m-1 text-white transition-all duration-300 ease-in-out">
@@ -93,7 +117,9 @@ function Item({ task, updateTaskStatus, reload }: { task: Task; updateTaskStatus
               <p className={`font-bold ${isCompleted ? 'line-through text-gray-400' : ''}`}>{task.title}</p>
               <FaEdit className="cursor-pointer hover:text-gray-300" onClick={handleEditClick} />
             </div>
-            <p className={`whitespace-pre-wrap ${isCompleted ? 'line-through text-gray-400' : ''}`}>{task.description}</p>
+            <p className={`whitespace-pre-wrap break-words ${isCompleted ? 'line-through text-gray-400' : ''}`}>
+              {renderLinkText(task.description)}
+            </p>
             <div className="flex space-x-2 mt-2">
               {task.status === Status.DONE ? (
                 <div 
