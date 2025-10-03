@@ -1,13 +1,13 @@
-use std::{fmt::format, path::PathBuf};
+use std::{path::PathBuf};
 
 use chrono::Local;
+use log::info;
 
 use crate::{core::{task::Task, task_util}, fileio::file};
 
 pub fn create(app_data_dir: &PathBuf, title: &str, description: &str) -> Result<(), tauri::Error> {
-    let now = Local::now();
-    let timestamp = now.format("%Y%m%d%H%M").to_string();
-    let task_id = format!("{}_{}", timestamp, generate_blake3_hash(timestamp.as_bytes()));
+    let task_id = generate_blake3_hash_id();
+    info!("task_id={}", &task_id);
     let task = Task {
         id: task_id.to_string(),
         title: title.to_string(),
@@ -20,9 +20,43 @@ pub fn create(app_data_dir: &PathBuf, title: &str, description: &str) -> Result<
         .map_err(|e| tauri::Error::Anyhow(e.into()))
 }
 
-
-fn generate_blake3_hash(bytes: &[u8]) -> String {
-    let hash = blake3::hash(bytes);
+fn generate_blake3_hash_id() -> String {
+    let now = Local::now();
+    let timestamp = now.format("%Y%m%d%H%M%S%3f").to_string();
+    let hash = blake3::hash(timestamp.as_bytes());
     let bytes = hash.as_bytes();
-    hex::encode(&bytes[..32])
+
+    format!("{}_{}", timestamp, hex::encode(&bytes[..32]))
+
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_generate_blake3_hash_id_format() {
+        let id = generate_blake3_hash_id();
+        let parts: Vec<&str> = id.split('_').collect();
+
+        assert_eq!(parts.len(), 2);
+
+        let timestamp = parts[0];
+        assert_eq!(timestamp.len(), 17);
+        assert!(timestamp.chars().all(|c| c.is_numeric()));
+
+        let hash = parts[1];
+        assert_eq!(hash.len(), 64);
+        assert!(hash.chars().all(|c| c.is_ascii_hexdigit()));
+    }
+
+    #[test]
+    fn test_generate_blake3_hash_id_uniqueness() {
+        let id1 = generate_blake3_hash_id();
+        std::thread::sleep(std::time::Duration::from_millis(10));
+        let id2 = generate_blake3_hash_id();
+
+        assert_ne!(id1, id2);
+    }
+}
+
