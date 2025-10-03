@@ -1,5 +1,4 @@
 use std::{fs::File, io::{Read, Write}, path::PathBuf};
-use tauri::Manager;
 use log::{info};
 
 pub fn read(path: &PathBuf) -> std::io::Result<String> {
