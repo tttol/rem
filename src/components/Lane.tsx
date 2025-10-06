@@ -3,7 +3,7 @@ import { Status } from '../enum';
 import Item from './Item';
 
 function Lane({ tasks, statusLabel, updateTaskStatus, reload, fadingTasks, fadingInTasks }: { tasks: Task[]; statusLabel: Status; updateTaskStatus: (taskId: string, oldStatus: Status, newStatus: Status) => void; reload: () => void; fadingTasks: Set<string>; fadingInTasks: Set<string> }) {
-  const filteredTasks = tasks.filter(task => task.status === statusLabel);
+  const filteredTasks = tasks.filter(task => task.status === statusLabel).sort((a, b) => a.id.localeCompare(b.id));
 
   const getStatusColor = () => {
     switch (statusLabel) {
