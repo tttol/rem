@@ -50,6 +50,16 @@ function Item({ task, updateTaskStatus, reload }: { task: Task; updateTaskStatus
   
   const isCompleted = task.status === Status.DONE;
 
+  const formatTaskDate = (taskId: string) => {
+    const dateStr = taskId.substring(0, 12);
+    const year = dateStr.substring(0, 4);
+    const month = dateStr.substring(4, 6);
+    const day = dateStr.substring(6, 8);
+    const hour = dateStr.substring(8, 10);
+    const minute = dateStr.substring(10, 12);
+    return `${year}/${month}/${day} ${hour}:${minute}`;
+  };
+
   const renderLinkText = (text: string) => {
     const urlRegex = /(https?:\/\/[^\s]+)/g;
     const parts = text.split(urlRegex);
@@ -120,6 +130,7 @@ function Item({ task, updateTaskStatus, reload }: { task: Task; updateTaskStatus
             <p className={`whitespace-pre-wrap break-words ${isCompleted ? 'line-through text-gray-400' : ''}`}>
               {renderLinkText(task.description)}
             </p>
+            <span className="text-xs text-gray-500">{formatTaskDate(task.id)}</span>
             <div className="flex space-x-2 mt-2">
               {task.status === Status.DONE ? (
                 <div 
