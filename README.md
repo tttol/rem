@@ -5,6 +5,9 @@ REM is a desktop application for task management. REM's data stays completely lo
 
 # Installation
 ```sh
+git clone https://github.com/tttol/rem.git
+cd rem
+npm i
 cd src-tauri
 npm run tauri dev
 ```
