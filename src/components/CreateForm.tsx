@@ -1,9 +1,11 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 import { invoke } from "@tauri-apps/api/core";
+import { Status } from "../enum";
 
 type Inputs = {
   title: string,
-  description: string
+  description: string,
+  status: Status
 }
 
 function CreateForm({setIsShowForm, reload}: {setIsShowForm: (isShowForm: boolean) => void, reload: () => void}) {
@@ -17,7 +19,7 @@ function CreateForm({setIsShowForm, reload}: {setIsShowForm: (isShowForm: boolea
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     setIsShowForm(false);
 
-    invoke('create_task', {title: data.title, description: data.description})
+    invoke('create_task', {title: data.title, description: data.description, status: data.status})
       .then(() => {
         reset();
         reload();
@@ -43,14 +45,25 @@ function CreateForm({setIsShowForm, reload}: {setIsShowForm: (isShowForm: boolea
         />
         {errors.title && <p className="text-red-500 text-sm mt-1 text-left font-bold">{errors.title.message}</p>}
       </div>
+      <div className="mb-4 relative">
+        <select
+          defaultValue="TODO"
+          className="w-full px-3 py-2 border border-gray-500 bg-gray-700 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none pr-8"
+          {...register("status")}
+        >
+          <option value="todo">TODO</option>
+          <option value="doing">DOING</option>
+        </select>
+        <span className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">▼</span>
+      </div>
       <div className="mb-4">
-        <textarea 
-          defaultValue="" 
+        <textarea
+          defaultValue=""
           placeholder="description(optional)"
           rows={4}
           autoCapitalize="off"
           className="w-full px-3 py-2 border border-gray-500 bg-gray-700 text-white placeholder-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-vertical"
-          {...register("description")} 
+          {...register("description")}
         />
       </div>
       <input 

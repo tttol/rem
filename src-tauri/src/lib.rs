@@ -18,10 +18,10 @@ fn get_all_task(app_handle: tauri::AppHandle) -> Result<Vec<task::Task>, tauri::
 }
 
 #[tauri::command]
-fn create_task(app_handle: tauri::AppHandle, title: &str, description: &str) -> Result<(), tauri::Error> {
+fn create_task(app_handle: tauri::AppHandle, title: &str, description: &str, status: &str) -> Result<(), tauri::Error> {
     info!("Calling create_task");
     let app_data_dir = app_data_dir::get(&app_handle)?;
-    create_task::create(&app_data_dir, &title, &description)
+    create_task::create(&app_data_dir, &title, &description, &status)
 }
 
 #[tauri::command]
