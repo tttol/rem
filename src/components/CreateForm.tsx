@@ -1,5 +1,6 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 import { invoke } from "@tauri-apps/api/core";
+import { Status } from "../enum";
 
 type Inputs = {
   title: string,
@@ -50,8 +51,8 @@ function CreateForm({setIsShowForm, reload}: {setIsShowForm: (isShowForm: boolea
           className="w-full px-3 py-2 border border-gray-500 bg-gray-700 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none pr-8"
           {...register("status")}
         >
-          <option value="TODO">TODO</option>
-          <option value="DOING">DOING</option>
+          <option value="todo">TODO</option>
+          <option value="doing">DOING</option>
         </select>
         <span className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">▼</span>
       </div>

@@ -5,18 +5,18 @@ use log::info;
 
 use crate::{core::{task::Task, task_util}, fileio::file};
 
-pub fn create(app_data_dir: &PathBuf, title: &str, description: &str) -> Result<(), tauri::Error> {
+pub fn create(app_data_dir: &PathBuf, title: &str, description: &str, status: &str) -> Result<(), tauri::Error> {
     let task_id = generate_blake3_hash_id();
-    info!("task_id={}", &task_id);
+    info!("task_id={}, title={}, description={}, status={}", &task_id, &title, &description, &status);
     let task = Task {
         id: task_id.to_string(),
         title: title.to_string(),
-        status: "todo".to_string(),
+        status: status.to_string(),
         description: description.to_string()
     };
 
     let task_json = task_util::task_to_string(&task)?;
-    file::create(&task_json, &app_data_dir.join(format!("todo/{}.json", &task_id)))
+    file::create(&task_json, &app_data_dir.join(format!("{}/{}.json", &status, &task_id)))
         .map_err(|e| tauri::Error::Anyhow(e.into()))
 }
 
