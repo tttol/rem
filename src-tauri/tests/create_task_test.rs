@@ -51,7 +51,7 @@ fn create_a_new_task_with_empty_description_and_doing_status() {
     let temp_dir = TempDir::new().expect("Failed to create temp directory");
     let app_data_dir = temp_dir.path().to_path_buf();
     
-    let todo_dir = app_data_dir.join("todo");
+    let todo_dir = app_data_dir.join("doing");
     fs::create_dir_all(&todo_dir).expect("Failed to create todo directory");
     
     let title = "Test Task";
