@@ -15,7 +15,7 @@ fn create_a_new_task() {
     let description = "This is a test task description";
     
     // Act
-    let result = create_task::create(&app_data_dir, title, description);
+    let result = create_task::create(&app_data_dir, title, description, "todo");
     
     // Assert
     assert!(result.is_ok(), "create_task should succeed");
@@ -46,7 +46,7 @@ fn create_a_new_task() {
 }
 
 #[test]
-fn create_a_new_task_with_empty_description() {
+fn create_a_new_task_with_empty_description_and_doing_status() {
     // Arrange
     let temp_dir = TempDir::new().expect("Failed to create temp directory");
     let app_data_dir = temp_dir.path().to_path_buf();
@@ -58,7 +58,7 @@ fn create_a_new_task_with_empty_description() {
     let description = "";
     
     // Act
-    let result = create_task::create(&app_data_dir, title, description);
+    let result = create_task::create(&app_data_dir, title, description, "doing");
     
     // Assert
     assert!(result.is_ok(), "create_task should succeed even with empty description");
@@ -83,5 +83,6 @@ fn create_a_new_task_with_empty_description() {
     
     assert_eq!(task.title, title);
     assert_eq!(task.description, "");
+    assert_eq!(task.status, "doing");
 }
 
