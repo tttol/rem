@@ -1,5 +1,5 @@
 use std::{fs, path::PathBuf};
-use log::{info};
+use log::{info, debug};
 use crate::{core::{task::Task, task_util}, fileio::file};
 
 pub fn read_all(app_data_dir: &PathBuf) -> Result<Vec<Task>, tauri::Error> {
@@ -12,10 +12,10 @@ pub fn read_all(app_data_dir: &PathBuf) -> Result<Vec<Task>, tauri::Error> {
         let _ = std::fs::create_dir_all(&path);
 
         let tasks = read_tasks_by_status(&path)?;
-        info!("{}={:?}", &status, tasks);
+        debug!("{}={:?}", &status, tasks);
         all_tasks.extend(tasks);
     }
-    info!("all_tasks={:?}", all_tasks);
+    debug!("all_tasks={:?}", all_tasks);
 
     Ok(all_tasks)
 }

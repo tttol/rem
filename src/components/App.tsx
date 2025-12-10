@@ -95,6 +95,16 @@ function App() {
     setIsShowForm(!isShowForm)
   }
 
+  const deleteDoneTasks = () => {
+    invoke('delete_all_done_tasks').then(() => {
+      console.log('delete success');
+      reload();
+    }).catch(err => {
+      console.error('delete failed:', err);
+      setMessage(`Failed to delete done tasks. ${err}`);
+    });
+  }
+
   return (
     <div className="min-h-screen bg-gray-900 text-white">
       <Header />
@@ -118,7 +128,7 @@ function App() {
         <div className="flex justify-center mx-auto w-full max-w-6xl">
           <Lane tasks={tasks} statusLabel={Status.TODO} updateTaskStatus={updateTaskStatus} reload={reload} fadingTasks={fadingTasks} fadingInTasks={fadingInTasks} />
           <Lane tasks={tasks} statusLabel={Status.DOING} updateTaskStatus={updateTaskStatus} reload={reload} fadingTasks={fadingTasks} fadingInTasks={fadingInTasks} />
-          <Lane tasks={tasks} statusLabel={Status.DONE} updateTaskStatus={updateTaskStatus} reload={reload} fadingTasks={fadingTasks} fadingInTasks={fadingInTasks} />
+          <Lane tasks={tasks} statusLabel={Status.DONE} updateTaskStatus={updateTaskStatus} reload={reload} fadingTasks={fadingTasks} fadingInTasks={fadingInTasks} onDeleteDoneTasks={deleteDoneTasks} />
         </div>
       </main>
     </div>
