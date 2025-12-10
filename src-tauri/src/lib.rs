@@ -3,6 +3,7 @@ pub mod fileio;
 use core::read_task;
 use core::update_task;
 use core::create_task;
+use core::delete_task;
 use core::task;
 
 use log::info;
@@ -38,6 +39,13 @@ fn update_task_content(app_handle: tauri::AppHandle, task_id: &str, status: &str
     update_task::update_content(&app_data_dir, task_id, status, title, description)
 }
 
+#[tauri::command]
+fn delete_all_done_tasks(app_handle: tauri::AppHandle) -> Result<(), tauri::Error> {
+    info!("Calling delete_all_done_tasks");
+    let app_data_dir = app_data_dir::get(&app_handle)?;
+    delete_task::delete_all_done_tasks(&app_data_dir)
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     env_logger::Builder::from_default_env()
@@ -46,7 +54,7 @@ pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_opener::init())
         .plugin(tauri_plugin_shell::init())
-        .invoke_handler(tauri::generate_handler![get_all_task, update_task_status, create_task, update_task_content])
+        .invoke_handler(tauri::generate_handler![get_all_task, update_task_status, create_task, update_task_content, delete_all_done_tasks])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
