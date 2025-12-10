@@ -12,6 +12,13 @@ cd src-tauri
 npm run tauri dev
 ```
 
+# Features
+- **Task Management**: Create, update, and organize tasks across different status lanes (TODO, DOING, DONE, PENDING)
+- **Drag & Drop**: Move tasks between status lanes
+- **Bulk Delete**: Delete all completed tasks at once using the trash icon in the DONE lane
+- **Local Storage**: All data is stored locally as JSON files on your machine
+- **Auto-reload**: Task list automatically refreshes after operations
+
 # Usage
 <img width="1996" height="1602" alt="image" src="https://github.com/tttol/rem/blob/main/docs/demo2.gif?raw=true" />
 

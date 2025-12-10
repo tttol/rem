@@ -29,24 +29,34 @@ This is a desktop memo/todo application built with Tauri framework:
 - `src-tauri/src/` - Rust backend code with modules:
   - `lib.rs` - Main library entry point with Tauri command handlers
   - `main.rs` - Application entry point
-  - `file.rs` - File I/O operations for markdown files
-  - `todo.rs` - Todo task management logic
-  - `commands.rs` - Tauri command definitions
-  - `sync.rs` - Import/export functionality
+  - `core/` - Core business logic modules:
+    - `create_task.rs` - Task creation logic
+    - `read_task.rs` - Task reading and listing logic
+    - `update_task.rs` - Task update logic
+    - `delete_task.rs` - Task deletion logic (bulk delete for DONE tasks)
+    - `task.rs` - Task data structure
+    - `task_util.rs` - Task utility functions
+  - `fileio/` - File I/O operations:
+    - `file.rs` - Basic file operations (read, write, delete)
+    - `app_data_dir.rs` - Application data directory management
 
 ### Application Logic
 REMは以下の仕様でTODOタスクを管理する:
 
-1. **タスク管理**: 各タスクは.mdファイルと1:1で紐づく
+1. **タスク管理**: 各タスクは.jsonファイルと1:1で紐づく
 2. **ステータス管理**: ディレクトリベースでステータスを管理
    - `todo/` - TODO状態のタスク
-   - `doing/` - 実行中のタスク  
+   - `doing/` - 実行中のタスク
    - `done/` - 完了したタスク
    - `pending/` - 保留中のタスク
 3. **データ構造**:
-   - タイトル: .mdファイル名
+   - タイトル: .jsonファイル名
    - ステータス: ファイルの配置ディレクトリ
-   - 詳細: .mdファイルの内容
+   - 詳細: .jsonファイルの内容
+4. **一括削除機能**:
+   - DONEレーンのヘッダー右側にゴミ箱アイコンボタンを表示
+   - クリックするとDONEステータスの全タスクファイルを削除
+   - 削除後は自動的にタスクリストをリロード
 
 ### Key Files
 - `src-tauri/tauri.conf.json` - Tauri configuration
